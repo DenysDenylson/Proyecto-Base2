@@ -1,0 +1,55 @@
+t1 = LOAD 'text1.txt' USING TextLoader() AS (string:chararray);
+t1 = FOREACH t1 GENERATE 'text1.txt' as fname, string;
+t2 = LOAD 'text2.txt' USING TextLoader() as (string:chararray);
+t2 = FOREACH t2 GENERATE 'text2.txt' as fname, string;
+t3 = LOAD 'text3.txt' USING TextLoader() as (string:chararray);
+t3 = FOREACH t3 GENERATE 'text3.txt' as fname, string;
+t4 = LOAD 'text4.txt' USING TextLoader() as (string:chararray);
+t4 = FOREACH t4 GENERATE 'text4.txt' as fname, string;
+t5 = LOAD 'text5.txt' USING TextLoader() as (string:chararray);
+t5 = FOREACH t5 GENERATE 'text5.txt' as fname, string;
+t6 = LOAD 'text6.txt' USING TextLoader() as (string:chararray);
+t6 = FOREACH t6 GENERATE 'text6.txt' as fname, string;
+t7 = LOAD 'text7.txt' USING TextLoader() as (string:chararray);
+t7 = FOREACH t7 GENERATE 'text7.txt' as fname, string;	
+t8 = LOAD 'text8.txt' USING TextLoader() as (string:chararray);
+t8 = FOREACH t8 GENERATE 'text8.txt' as fname, string;
+t9 = LOAD 'text9.txt' USING TextLoader() as (string:chararray);
+t9 = FOREACH t9 GENERATE 'text9.txt' as fname, string;
+t10 = LOAD 'text10.txt' USING TextLoader() as (string:chararray);
+t10 = FOREACH t10 GENERATE 'text10.txt' as fname, string;
+t11 = LOAD 'text11.txt' USING TextLoader() as (string:chararray);
+t11 = FOREACH t11 GENERATE 'text11.txt' as fname, string;
+t12 = LOAD 'text12.txt' USING TextLoader() as (string:chararray);
+t12 = FOREACH t12 GENERATE 'text12.txt' as fname, string;
+t13 = LOAD 'text13.txt' USING TextLoader() as (string:chararray);
+t13 = FOREACH t13 GENERATE 'text13.txt' as fname, string;
+t14 = LOAD 'text14.txt' USING TextLoader() as (string:chararray);
+t14 = FOREACH t14 GENERATE 'text14.txt' as fname, string;
+t15 = LOAD 'text15.txt' USING TextLoader() as (string:chararray);
+t15 = FOREACH t15 GENERATE 'text15.txt' as fname, string;
+t16 = LOAD 'text16.txt' USING TextLoader() as (string:chararray);
+t16 = FOREACH t16 GENERATE 'text16.txt' as fname, string;
+t17 = LOAD 'text17.txt' USING TextLoader() as (string:chararray);
+t17 = FOREACH t17 GENERATE 'text17.txt' as fname, string;
+t18 = LOAD 'text18.txt' USING TextLoader() as (string:chararray);
+t18 = FOREACH t18 GENERATE 'text18.txt' as fname, string;
+t19 = LOAD 'text19.txt' USING TextLoader() as (string:chararray);
+t19 = FOREACH t19 GENERATE 'text19.txt' as fname, string;
+t20 = LOAD 'text20.txt' USING TextLoader() as (string:chararray);
+t20 = FOREACH t20 GENERATE 'text20.txt' as fname, string;
+
+
+
+
+text = UNION t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, t15, t16, t17, t18, t19, t20;
+words = FOREACH text GENERATE fname, FLATTEN( TOKENIZE(string) );
+
+word_groups = GROUP words BY $1;
+index = FOREACH word_groups {
+files = DISTINCT $1.$0;
+cnt = COUNT(files);
+GENERATE $0, cnt, files;
+};
+STORE index INTO 'inverted_index13';
+dump index;
